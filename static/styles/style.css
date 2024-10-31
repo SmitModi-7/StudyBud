@@ -63,6 +63,23 @@ a {
 }
 
 /*========== components ==========*/
+.flash-messages {
+  text-align: left;
+  margin: 5px 0px 0px 10px;
+}
+
+.alert {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 28.5%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
 .container {
   max-width: 120rem;
   width: 90%;
@@ -425,6 +442,7 @@ a {
   width: 90%;
   max-width: 48rem;
   min-height: 40rem;
+  margin-top: 5rem;
   position: absolute;
   top: 50%;
   left: 50%;

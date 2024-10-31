@@ -6,7 +6,7 @@ from .models import Room, User
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['name', 'username', 'email', 'password1', 'password2']
+        fields = ['email', 'name', 'username', 'password1', 'password2']
 
 
 class RoomForm(ModelForm):

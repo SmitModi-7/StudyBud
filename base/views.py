@@ -8,7 +8,10 @@ from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
 
 def loginPage(request):
+
     page = 'login'
+    context = {'page': page}
+
     if request.user.is_authenticated:
         return redirect('home')
 
@@ -20,6 +23,7 @@ def loginPage(request):
             user = User.objects.get(email=email)
         except:
             messages.error(request, 'User does not exist')
+            return render(request, 'base/login_register.html', context)
 
         user = authenticate(request, email=email, password=password)
 
@@ -27,9 +31,8 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Username OR password does not exit')
+            messages.error(request, 'Email or password does not exist')
 
-    context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
 
@@ -50,7 +53,9 @@ def registerPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'An error occurred during registration')
+            # Showing Errors to users
+            for field, error in form.errors.items():
+                messages.error(request, error)
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -180,6 +185,10 @@ def updateUser(request):
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk=user.id)
+        else:
+            # Showing Errors to users
+            for field, error in form.errors.items():
+                messages.error(request, error)
 
     return render(request, 'base/update-user.html', {'form': form})
 
