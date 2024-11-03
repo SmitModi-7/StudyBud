@@ -49,6 +49,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     "corsheaders",
+
+    'storages'
 ]
 
 AUTH_USER_MODEL = 'base.User'
@@ -149,8 +151,6 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = BASE_DIR / 'static/images'
 
-# STATIC_ROOT =
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -158,3 +158,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Setting S3 Bucket Credentials
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+# Setting Region Name
+AWS_S3_REGION_NAME = 'ap-south-1' # Your region name
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+# Do not allow user to overwrite the files with same name
+AWS_S3_FILE_OVERWRITE = False
+# Setting Access Control List (ACL) for new S3 buckets to none.
+AWS_DEFAULT_ACL = None
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
