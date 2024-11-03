@@ -14,3 +14,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'studybud.settings')
 
 application = get_wsgi_application()
+
+# To connect our app to vercel app
+app = application
