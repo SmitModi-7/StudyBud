@@ -31,8 +31,7 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-3#av2c6nptlbbb6^muqkchu&fe3wv&n$t2+g$v!ir-f5%doocb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = bool(os.environ.get('DEBUG') == 'True')
 
 ALLOWED_HOSTS = ['*']
 
@@ -96,18 +95,20 @@ WSGI_APPLICATION = 'studybud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'studybud_dev',
-#         'USER': os.environ.get('USER'),
-#         'PASSWORD': os.environ.get('PASSWORD'),
-#         'HOST':'127.0.0.1',
-#         'PORT':'3306',
-#     }
-# }
-
-DATABASES = {
+# If Debug is True, Then use local DB else use production DB
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'studybud_dev',
+            'USER': os.environ.get('USER'),
+            'PASSWORD': os.environ.get('PASSWORD'),
+            'HOST':'127.0.0.1',
+            'PORT':'3306',
+        }
+    }
+else:
+    DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 
@@ -149,8 +150,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# STATIC_URL = '/static/'
-# MEDIA_URL = '/images/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Local directory for static files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')  # Local directory for media files
@@ -166,8 +165,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 # Setting S3 Bucket Credentials
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# Storage bucket for production
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME_PRODUCTION')
+# Change the storage bucket for development
+if DEBUG:
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
 # Setting Region Name
@@ -180,7 +182,7 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/images/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/images/'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATIC_FILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
