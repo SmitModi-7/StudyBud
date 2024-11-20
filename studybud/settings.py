@@ -51,7 +51,10 @@ INSTALLED_APPS = [
     'rest_framework',
     "corsheaders",
 
-    'storages'
+    'storages',
+
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 AUTH_USER_MODEL = 'base.User'
@@ -150,6 +153,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# Uncomment following code to make changes in css file and check changes at local development time
+# Also comment other static root, media root, static url and media url linesa
+# ==================================================
+# STATIC_URL = '/static/'
+# MEDIA_URL = '/images/'
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static'
+# ]
+# MEDIA_ROOT = BASE_DIR / 'static/images'
+# ==================================================
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Local directory for static files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')  # Local directory for media files
@@ -186,3 +200,18 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/images/'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATIC_FILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+#using SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#This is the hostname of the SMTP server that will send my emails
+EMAIL_HOST = 'smtp.gmail.com'
+#587 is port no of which the SMTP server operates. (587 provides TLS i.e. Transport layer security)
+EMAIL_PORT = 587
+#using TLS encryption when connecting to SMPT server
+EMAIL_USE_TLS = True
+#sending mail through this credentials (which are stored in evironment variable as local variable for security reasons)
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+#we want crispy to use bootstrap4 instead of default bootstrap2
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

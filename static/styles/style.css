@@ -441,7 +441,7 @@ a {
 .layout__box {
   width: 90%;
   max-width: 48rem;
-  min-height: 40rem;
+  min-height: 20rem;
   margin-top: 6rem;
   position: absolute;
   top: 50%;
@@ -1181,3 +1181,10 @@ a {
   color: var(--color-main);
   font-weight: 1.4rem;
 }
+
+/* Override Bootstrap's default invalid feedback color */
+.is-invalid,.invalid-feedback {
+  color: #ff474c;
+  font-weight: bold; /* Red text for the error message */
+}
+
